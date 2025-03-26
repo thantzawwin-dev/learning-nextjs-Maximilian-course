@@ -1,12 +1,21 @@
 import Link from "next/link";
-
+import { Suspense } from "react";
 import classes from "./page.module.css";
 import MealsGrid from "@/components/meals/meals-grid";
-// import { getMeals } from "@/lib/meals";
+import { getMeals } from "@/lib/meals";
+
+export const metadata = {
+  title: "All Meals",
+  description: "Browse the delicious meals shared by our vibrant community.",
+};
+
+async function Meals() {
+  const meals = await getMeals();
+  console.log("Fetching Meals");
+  return <MealsGrid meals={meals} />;
+}
 
 export default async function MealsPage() {
-  // const meals = await getMeals();
-
   return (
     <>
       <header className={classes.header}>
@@ -19,7 +28,9 @@ export default async function MealsPage() {
         </p>
       </header>
       <main className={classes.main}>
-        <MealsGrid meals={[]} />
+        <Suspense fallback={<p className={classes.loading}>Fetching meals...</p>}>
+          <Meals />
+        </Suspense>
       </main>
     </>
   );
