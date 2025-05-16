@@ -1,7 +1,7 @@
-import path from 'path';
-import fs from 'fs/promises';
+import path from "path";
+import fs from "fs/promises";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 function HomePage(props) {
   const { products } = props;
@@ -18,15 +18,15 @@ function HomePage(props) {
 }
 
 export async function getStaticProps(context) {
-  console.log('(Re-)Generating...');
-  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
+  console.log("(Re-)Generating...");
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
 
   if (!data) {
     return {
       redirect: {
-        destination: '/no-data',
+        destination: "/no-data",
       },
     };
   }
@@ -39,7 +39,7 @@ export async function getStaticProps(context) {
     props: {
       products: data.products,
     },
-    revalidate: 10,
+    // revalidate: 10,
   };
 }
 
